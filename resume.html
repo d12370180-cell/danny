@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Danny 的個人履歷</title>
+ <link rel="icon" type="image/x-icon" href="cat.jpg">
+<style>
+  * { box-sizing: border-box; font-family: "微軟正黑體", sans-serif; }
+
+  /* 修改：加入淡出轉場 */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #e6e6e6;
+    color: #222;
+    overflow-x: hidden;
+    transition: opacity .6s ease; /* 新增 */
+  }
+
+  /* 新增：淡出狀態 */
+  body.fade-out { opacity: 0; } /* 新增 */
+
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 900px;
+    margin: 100px auto 100px auto;
+    padding: 40px 50px;
+    background-color: #fff8e1;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgb(0 0 0 / 0.1);
+    position: relative;
+    z-index: 10;
+  }
+
+  header { margin-bottom: 80px; text-align: center; }
+  header h1 { font-size: 3.5rem; margin: 0 0 10px 0; color: #205e85; }
+  header p { font-size: 1.4rem; color: #205e85dd; font-weight: 500; }
+
+  .section { position: relative; margin-bottom: 80px; padding-left: 45px; }
+  .section::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 12px;
+    width: 12px; height: 12px;
+    background-color: #205e85;
+    border-radius: 50%;
+  }
+  .section:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 5px; top: 30px;
+    width: 2px;
+    height: calc(100% - 30px);
+    background-color: #205e85aa;
+  }
+  .section h2 { font-size: 1.9rem; margin-bottom: 20px; color: #205e85cc; }
+  .section p, .section ul { font-size: 1.15rem; line-height: 1.8; color: #333; }
+  ul { padding-left: 20px; }
+
+  /* 新增：履歷頁導覽 */
+  .nav {
+    margin-top: 40px; /* 新增 */
+    display: flex; /* 新增 */
+    justify-content: space-between; /* 新增 */
+    align-items: center; /* 新增 */
+  }
+  .nav a {
+    text-decoration: none; /* 新增 */
+    font-weight: bold; /* 新增 */
+    color: #205e85; /* 新增 */
+    transition: .2s; /* 新增 */
+  }
+  .nav a:hover { opacity: .75; } /* 新增 */
+
+  @media (max-width: 768px) {
+    .wrapper { margin: 60px 20px; padding: 30px 25px; }
+    header h1 { font-size: 2.5rem; }
+    .section h2 { font-size: 1.5rem; }
+  }
+
+  /* ===== 導覽按鈕 hover 填滿動畫 ===== */
+/* 修改：.nav a（替換成這段） */
+.nav a{
+  position: relative;              /* 新增 */
+  display: inline-block;           /* 新增 */
+  padding: 10px 16px;              /* 新增 */
+  border-radius: 10px;             /* 新增 */
+  text-decoration: none;
+  font-weight: bold;
+  color: #205e85;
+  overflow: hidden;                /* 新增：讓色塊不超出 */
+  transition: color .35s ease;     /* 新增 */
+}
+
+/* 新增：確保文字在色塊上面 */
+.nav a span{
+  position: relative;
+  z-index: 1;
+}
+
+/* 新增：背景色塊（從左到右填滿） */
+.nav a::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #eeff00;
+  transform: scaleX(0);            /* 新增：起始不顯示 */
+  transform-origin: left;          /* 新增：從左開始長 */
+  transition: transform .55s cubic-bezier(.2,.9,.2,1); /* 新增：慢慢填滿 */
+  z-index: 0;                      /* 新增 */
+}
+
+
+
+/* 新增：hover 時填滿 + 文字變白 */
+.nav a:hover::before{
+  transform: scaleX(1);
+}
+.nav a:hover{
+  color: #284b96;
+}
+
+/* 新增：按下去小回饋 */
+.nav a:active{
+  transform: translateY(1px);
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="paintCanvas"></canvas>
+
+<div class="wrapper">
+  <header>
+    <h1>Danny</h1>
+    <p>Web / Creative Designer</p>
+  </header>
+
+  <div class="section">
+    <h2>關於我</h2>
+    <p>專注於網頁與動態視覺設計，讓資訊以自然、舒服的方式被閱讀。</p>
+  </div>
+
+  <div class="section">
+    <h2>基本資料</h2>
+    <ul>
+      <li>學校：台南應用科技大學</li>
+      <li>身份：學生</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>技能</h2>
+    <ul>
+      <li>Image Retouching</li>
+      <li>JavaScript 基礎</li>
+      <li>動態視覺設計</li>
+      <li>Compositing</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>經歷</h2>
+    <p>多媒體與網頁設計相關課程，熟悉版面結構與視覺引導。</p>
+  </div>
+
+  <div class="section">
+    <h2>聯絡方式</h2>
+    <p>Email：danny20041030@gmail.com</p>
+  </div>
+
+  <!-- 新增：導覽按鈕（可導向作品集） -->
+  <div class="nav">
+    <a href="index.html" class="link"><span>← 首頁</span></a> <!-- 修改 -->
+    <a href="portfolio.html" class="link"><span>作品集 →</span></a> <!-- 修改 -->
+
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('paintCanvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+
+/* 修改：resize 避免重複 scale 疊加 */
+function resize() {
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  canvas.width = Math.floor(width * window.devicePixelRatio);
+  canvas.height = Math.floor(height * window.devicePixelRatio);
+
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+
+  // 新增：每次 resize 先重設 transform，避免 scale 疊加
+  ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0); // 新增
+}
+resize();
+window.addEventListener('resize', resize);
+
+// 滑鼠尾巴
+let points = [];
+window.addEventListener('mousemove', e => {
+  points.push({ x: e.clientX, y: e.clientY, life: 1.0 });
+  if(points.length > 120) points.shift();
+});
+
+// 背景葉子
+const leafCount = 20;
+const leaves = [];
+for(let i=0;i<leafCount;i++){
+  leaves.push({
+    x: Math.random()*width,
+    y: Math.random()*height,
+    size: 10+Math.random()*15,
+    speedX: (Math.random()-0.5)*0.5,
+    speedY: 0.5 + Math.random(),
+    angle: Math.random()*Math.PI*2,
+    rotateSpeed: (Math.random()-0.5)*0.02
+  });
+}
+
+/* 修改：resize 後 leaves 邊界用最新 width/height（會自動） */
+function drawLeaves(){
+  leaves.forEach(leaf=>{
+    leaf.x += leaf.speedX;
+    leaf.y += leaf.speedY;
+    leaf.angle += leaf.rotateSpeed;
+    if(leaf.y > height) leaf.y = -20;
+    if(leaf.x < -20) leaf.x = width;
+    if(leaf.x > width+20) leaf.x = 0;
+
+    ctx.save();
+    ctx.translate(leaf.x, leaf.y);
+    ctx.rotate(leaf.angle);
+    ctx.fillStyle = 'rgba(50,160,50,0.5)';
+    ctx.beginPath();
+    ctx.moveTo(0, -leaf.size/2);
+    ctx.bezierCurveTo(leaf.size/2,-leaf.size/2, leaf.size/2,leaf.size/2, 0, leaf.size/2);
+    ctx.bezierCurveTo(-leaf.size/2, leaf.size/2,-leaf.size/2,-leaf.size/2,0,-leaf.size/2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function draw() {
+  ctx.fillStyle = 'rgba(230,230,230,0.18)';
+  ctx.fillRect(0, 0, width, height);
+
+  drawLeaves();
+
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 3;
+
+  if(points.length > 2){
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+
+    for(let i=1;i<points.length-2;i++){
+      const cpx = (points[i].x + points[i+1].x)/2;
+      const cpy = (points[i].y + points[i+1].y)/2;
+      const alpha = points[i].life;
+      ctx.strokeStyle = `rgba(32, 94, 133, ${alpha})`;
+      ctx.quadraticCurveTo(points[i].x, points[i].y, cpx, cpy);
+    }
+
+    ctx.lineTo(points[points.length-1].x, points[points.length-1].y);
+    ctx.stroke();
+  }
+
+  points.forEach(p=>{ p.life -= 0.016; if(p.life<0) p.life=0; });
+  points = points.filter(p=>p.life>0.05);
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* 新增：fade-out 導頁（讓履歷頁按鈕跳轉更順） */
+document.querySelectorAll('.link').forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    const url = link.getAttribute('href');
+    document.body.classList.add('fade-out');
+    setTimeout(()=>location.href=url,600);
+  });
+});
+</script>
+
+</body>
+</html>
